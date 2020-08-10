@@ -1,6 +1,18 @@
-type Todo @model {
+type Todo @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String!
   description: String
 }
 
+type Food @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+  status: FoodStatus!
+  price: Int
+  description: String
+}
+
+enum FoodStatus {
+  AVAILABLE
+  SOLD_OUT
+}

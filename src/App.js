@@ -4,6 +4,8 @@ import Amplify, { API, graphqlOperation } from 'aws-amplify'
 import { createTodo } from './graphql/mutations'
 import { listTodos } from './graphql/queries'
 import { withAuthenticator } from '@aws-amplify/ui-react'
+import { DataStore, Predicates } from '@aws-amplify/datastore'
+import { Food, FoodStatus } from './models' // why this include works..
 
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
@@ -16,6 +18,7 @@ const App = () => {
 
   useEffect(() => {
     fetchTodos()
+    fetchFoods()
   }, [])
 
   function setInput(key, value) {
@@ -27,8 +30,20 @@ const App = () => {
       const todoData = await API.graphql(graphqlOperation(listTodos))
       const todos = todoData.data.listTodos.items
       setTodos(todos)
-    } catch (err) { console.log('error fetching todos') }
+      console.log('load todos', todos)
+    } catch (err) { console.log('error fetching todos', err) }
   }
+
+  async function fetchFoods() {
+    try {
+      DataStore.delete(Food, Predicates.ALL); // do not forget to comment this line
+      const foods = await DataStore.query(Food);
+      console.log("Foods retrieved successfully!", foods);
+    } catch (error) {
+      console.log("Error retrieving foods", error);
+    }
+  }
+
 
   async function addTodo() {
     try {
@@ -39,6 +54,22 @@ const App = () => {
       await API.graphql(graphqlOperation(createTodo, {input: todo}))
     } catch (err) {
       console.log('error creating todo:', err)
+    }
+  }
+
+  async function addFood() {
+    try {
+      if (!formState.name || !formState.description) return
+      const todo = { ...formState }
+      await DataStore.save(
+        new Food({
+          name: todo.name,
+          status: FoodStatus.AVAILABLE
+        })
+      );
+      console.log("Food saved successfully!");
+    } catch (error) {
+      console.log("Error saving food", error);
     }
   }
 
@@ -58,6 +89,7 @@ const App = () => {
         placeholder="Description"
       />
       <button style={styles.button} onClick={addTodo}>Create Todo</button>
+      <button style={styles.button} onClick={addFood}>Create Food</button>
       {
         todos.map((todo, index) => (
           <div key={todo.id ? todo.id : index} style={styles.todo}>
