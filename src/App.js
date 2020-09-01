@@ -44,6 +44,26 @@ const App = () => {
     }
   }
 
+  async function testLamda() {
+    const apiName = 'myrestapi';
+    const path = '/order'; 
+    const myInit = { // OPTIONAL
+        headers: {}, // OPTIONAL
+        response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)
+        queryStringParameters: {  // OPTIONAL
+            name: 'param',
+        },
+    };
+
+    API.get(apiName, path, myInit)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+    });
+  }
+
 
   async function addTodo() {
     try {
@@ -90,6 +110,7 @@ const App = () => {
       />
       <button style={styles.button} onClick={addTodo}>Create Todo</button>
       <button style={styles.button} onClick={addFood}>Create Food</button>
+      <button style={styles.button} onClick={testLamda}>test Lamda</button>
       {
         todos.map((todo, index) => (
           <div key={todo.id ? todo.id : index} style={styles.todo}>

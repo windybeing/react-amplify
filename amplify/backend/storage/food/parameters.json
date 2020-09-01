@@ -1,0 +1,5 @@
+{
+    "tableName": "foodtable",
+    "partitionKeyName": "id",
+    "partitionKeyType": "S"
+}

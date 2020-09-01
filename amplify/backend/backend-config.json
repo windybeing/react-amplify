@@ -15,6 +15,20 @@
                     "additionalAuthenticationProviders": []
                 }
             }
+        },
+        "myrestapi": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "addOrder",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ]
         }
     },
     "auth": {
@@ -29,6 +43,20 @@
         "amplifyhosting": {
             "service": "amplifyhosting",
             "type": "cicd"
+        }
+    },
+    "function": {
+        "addOrder": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": []
+        }
+    },
+    "storage": {
+        "food": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation"
         }
     }
 }

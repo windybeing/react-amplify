@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/order",
+            "lambdaFunction": "addOrder",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "myrestapi",
+    "apiName": "myrestapi",
+    "functionArns": [
+        {
+            "lambdaFunction": "addOrder"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-reactamplified-dev-214021-authRole",
+        "unAuthRoleName": "amplify-reactamplified-dev-214021-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "addOrder",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
